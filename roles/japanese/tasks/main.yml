@@ -1,0 +1,40 @@
+# sudo pacman -S fcitx5
+- name: Install fcitx5
+  ansible.builtin.pacman:
+    name: fcitx5
+    state: present
+    extra_args: --overwrite "*"
+  when: ansible_distribution == "Archlinux"
+  become: true
+  # if confilct, ignore
+  ignore_errors: true
+  tags:
+    - fcitx5
+
+# sudo pacman -S fcitx5-configtool
+- name: Install fcitx5-configtool
+  ansible.builtin.pacman:
+    name: fcitx5-configtool
+    state: present
+  when: ansible_distribution == "Archlinux"
+  become: true
+  tags:
+    - fcitx5-configtool
+
+
+# export DefaultIMModule=fcitx5
+# export GTK_IM_MODULE=fcitx5
+# export QT_IM_MODULE=fcitx5
+# export XMODIFIERS="@im=fcitx5"
+
+- name: Set environment variables for fcitx5
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_env.HOME }}/.xprofile"
+    line: "{{ item }}"
+    state: present
+    create: yes
+  loop:
+    - 'export DefaultIMModule=fcitx5'
+    - 'export GTK_IM_MODULE=fcitx5'
+    - 'export QT_IM_MODULE=fcitx5'
+    - 'export XMODIFIERS="@im=fcitx5"'

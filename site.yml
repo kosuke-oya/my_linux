@@ -1,0 +1,6 @@
+- name: Configure my PC
+  hosts: my_pc
+  roles:
+    - japanese
+    - pam
+    

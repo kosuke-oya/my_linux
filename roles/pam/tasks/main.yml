@@ -1,0 +1,27 @@
+# pam.dで指紋認証の設定を行う
+- name: Install required packages
+  package:
+    name:
+      - libpam-fprintd
+      - fprintd
+    state: present
+- name: Configure fingerprint authentication
+  copy:
+    src: fingerprint.conf
+    dest: /etc/pam.d/fingerprint.conf
+
+# 以下のpam.dファイルに auth sufficient pam_fprintd.soを追加
+# /etc/pam.d/system-local-login
+# /etc/pam.d/i3lock
+# /etc/pam.d/lightdm
+# /etc/pam.d/sudo
+- name: Add pam_fprintd to PAM configuration
+  lineinfile:
+    path: "{{ item }}"
+    line: "auth    sufficient    pam_fprintd.so"
+    state: present
+  with_items:
+    - /etc/pam.d/system-local-login
+    - /etc/pam.d/i3lock
+    - /etc/pam.d/lightdm
+    - /etc/pam.d/sudo
