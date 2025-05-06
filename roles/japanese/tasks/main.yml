@@ -1,6 +1,6 @@
 # sudo pacman -S fcitx5
 - name: Install fcitx5
-  ansible.builtin.pacman:
+  community.general.pacman:
     name: fcitx5
     state: present
     extra_args: --overwrite "*"
@@ -13,11 +13,12 @@
 
 # sudo pacman -S fcitx5-configtool
 - name: Install fcitx5-configtool
-  ansible.builtin.pacman:
+  community.general.pacman:
     name: fcitx5-configtool
     state: present
   when: ansible_distribution == "Archlinux"
   become: true
+  ignore_errors: true
   tags:
     - fcitx5-configtool
 
